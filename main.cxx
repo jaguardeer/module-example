@@ -1,5 +1,5 @@
 #include <iostream>
-module test_module;
+import test_module;
 
 using namespace std;
 
