@@ -1,0 +1,3 @@
+todo:
+check out build2
+build lib from modules
