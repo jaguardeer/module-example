@@ -1,3 +1,4 @@
 todo:
 check out build2
 build lib from modules
+try to get makefile working on windows?
