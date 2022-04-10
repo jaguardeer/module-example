@@ -11,3 +11,8 @@ int hello() {
 	cout << "hello!!!" << endl;
 	return 1337;
 }
+
+double hi() {
+	cout << "hi!" << endl;
+	return 69.420;
+}
