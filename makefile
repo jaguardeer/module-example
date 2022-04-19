@@ -10,6 +10,15 @@ endif
 
 CXXFLAGS = -std=c++20 -fno-ms-compatibility -MMD
 
+# clang++ module flags:
+# ms-compatibility : mvcs compatibility
+# module-file-deps : ??
+# module-dependency-dir : ??
+# module-file-info : dumps a bunch of garbage to stdout
+# module-file : load a module file
+# prebuilt-module-path : load modules in this path
+# cxx-modules : enable modules
+
 %.pcm: %.ixx
 	clang++ $(CXXFLAGS) --precompile -x c++-module $<
 
