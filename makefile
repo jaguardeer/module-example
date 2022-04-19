@@ -1,14 +1,12 @@
-.DEFAULT_GOAL: app.exe
-
-app.exe: main.o test_module.o other.o
-	clang++ $^ -o $@
+.DEFAULT_GOAL := app.exe
 
 ifeq ($(OS),Windows_NT)
 SHELL       := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-CXXFLAGS = -std=c++20 -fno-ms-compatibility -MMD
+CXXFLAGS = -std=c++20 -fno-ms-compatibility
+
 
 # clang++ module flags:
 # ms-compatibility : mvcs compatibility
@@ -20,19 +18,32 @@ CXXFLAGS = -std=c++20 -fno-ms-compatibility -MMD
 # cxx-modules : enable modules
 
 %.pcm: %.ixx
-	clang++ $(CXXFLAGS) --precompile -x c++-module $<
+	clang++ $(CXXFLAGS) $(call emitCCJ,$@) --precompile -x c++-module $<
 
 main.o: main.cxx test_module.pcm
-	clang++ $(CXXFLAGS) -fprebuilt-module-path=. -c $<
+	clang++ $(CXXFLAGS) $(call emitCCJ,$@) -fprebuilt-module-path=. -c $<
 
 %.o: %.cxx %.pcm
-	clang++ $(CXXFLAGS) -fmodule-file="$(basename $@).pcm" -c $<
+	clang++ $(CXXFLAGS) $(call emitCCJ,$@) -fmodule-file="$(basename $@).pcm" -c $<
 
 %.o: %.cxx
-	clang++ $(CXXFLAGS) -c $<
+	clang++ $(CXXFLAGS) $(call emitCCJ,$@) -c $<
+
+app.exe: main.o test_module.o other.o
+	clang++ $^ -o $@
 
 
 .PHONY: clean
+
+CCJDIR = ./dep
+emitCCJ = -MJ ./dep/$1.json
+compile_commands.json: app.exe | $(CCJDIR)
+	echo "[" >$@
+	cat ./dep/* >>$@
+	echo "]" >>$@
+
+$(CCJDIR):
+	mkdir -p $@
 
 CLEANFILES = main.o app.exe test_module.o test_module.pcm other.o
 clean:
