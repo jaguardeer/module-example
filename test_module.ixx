@@ -8,3 +8,8 @@ export int hello();        // this exposes hello() to anyone that imports test_m
                            // hello() is implemented in test_module.cxx
 
 export double hi();
+
+export class bar {
+public:
+	int barFunc(int a);
+};

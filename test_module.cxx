@@ -16,3 +16,8 @@ double hi() {
 	cout << "hi!" << endl;
 	return 69.420;
 }
+
+int bar::barFunc(int a) {
+	cout << "You gave me " << a << endl;
+	return a + 1;
+}

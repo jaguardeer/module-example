@@ -11,5 +11,8 @@ int main() {
 	cout << "hi() returned value: " << result2 << endl;
 	const auto result3 = foo();
 	cout << "foo() returned value: " << result3 << endl;
+	bar b;
+	const auto result4 = b.barFunc(2);
+	cout << "b.barFunc(2) returned value: " << result4 << endl;
 	return 0;;
 }
