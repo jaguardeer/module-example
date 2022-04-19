@@ -1,11 +1,14 @@
 .DEFAULT_GOAL: app.exe
 
+app.exe: main.o test_module.o other.o
+	clang++ $^ -o $@
+
 ifeq ($(OS),Windows_NT)
 SHELL       := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-CXXFLAGS = -std=c++20 -fno-ms-compatibility
+CXXFLAGS = -std=c++20 -fno-ms-compatibility -MMD
 
 %.pcm: %.ixx
 	clang++ $(CXXFLAGS) --precompile -x c++-module $<
@@ -19,9 +22,6 @@ main.o: main.cxx test_module.pcm
 %.o: %.cxx
 	clang++ $(CXXFLAGS) -c $<
 
-
-app.exe: main.o test_module.o other.o
-	clang++ $^ -o $@
 
 .PHONY: clean
 
